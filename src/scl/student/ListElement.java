@@ -1,11 +1,11 @@
 package scl.student;
 
-public class ListElement<T> {
+public class ListElement {
 
-	private ListElement<T> next;
-	private T content;
+	private ListElement next;
+	private Student content;
 	
-	public ListElement(T content, ListElement<T> next) {
+	public ListElement(Student content, ListElement next) {
 		this.content = content;
 		this.next = next;
 	}
@@ -13,19 +13,19 @@ public class ListElement<T> {
 	public ListElement() {
 	}
 	
-	public ListElement<T> getNext() {
+	public ListElement getNext() {
 		return next;
 	}
 	
-	public T getContent() {
+	public Student getContent() {
 		return content;
 	}
 	
-	public void setContent(T content) {
+	public void setContent(Student content) {
 		this.content = content;
 	}
 	
-	public void setNext(ListElement<T> next) {
+	public void setNext(ListElement next) {
 		this.next = next;
 	}
 }

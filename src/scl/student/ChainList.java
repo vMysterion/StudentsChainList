@@ -1,18 +1,18 @@
 package scl.student;
 
-public class ChainList<T> {
+public class ChainList {
 	
-	private ListElement<T> head;
-	private ListElement<T> tail;
-	private ListElement<T> current;
+	private ListElement head;
+	private ListElement tail;
+	private ListElement current;
 	
-	public ChainList(T[] data) {
+	public ChainList(Student[] data) {
 		create(data);
 	}
 	
-	public void create(T[] data) {
+	public void create(Student[] data) {
 		for(int i=0;i<data.length;i++) {
-			ListElement<T> element = new ListElement<T>();
+			ListElement element = new ListElement();
 			element.setContent(data[i]);
 			element.setNext(null);
 			if(i==0) {
@@ -35,8 +35,8 @@ public class ChainList<T> {
 		current = null;
 	}
 	
-	public T next() {
-		ListElement<T> next = current;
+	public Student next() {
+		ListElement next = current;
 		current = current.getNext();
 		return next.getContent();
 	}
@@ -59,11 +59,11 @@ public class ChainList<T> {
 		return false;
 	}
 	
-	public T get(int index) {
+	public Student get(int index) {
 		return getElement(index).getContent();
 	}
 	
-	private ListElement<T> getElement(int index) {
+	private ListElement getElement(int index) {
 		for(int i=0;i<index;i++) {
 			next();
 		}
@@ -71,8 +71,8 @@ public class ChainList<T> {
 	}
 	
 	public void removeIndex(int index) {
-		ListElement<T> before = null;
-		ListElement<T> after = null;
+		ListElement before = null;
+		ListElement after = null;
 		if(index == 0) {
 			head = getElement(1);
 			return;
@@ -85,12 +85,12 @@ public class ChainList<T> {
 		before.setNext(after);
 	}
 	
-	/*
 	public int remove(String name) {
 		int size = size();
+		int remove = 0;
 		for(int i=0;i<size;i++) {
-			T comp = next();
-			if(name.equals("")) {
+			Student comp = next();
+			if(name.equals(comp.getName())) {
 				
 			}
 		}
