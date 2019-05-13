@@ -19,6 +19,13 @@ public class Student implements Comparable<Student> {
 	}
 	
 	@Override
+	public boolean equals(Object o) {
+		Student that = (Student)o;
+		if(this.mn == that.getMatriculationNumber()) return true;
+		return false;
+	}
+	
+	@Override
 	public int compareTo(Student that) {
 		return this.mn - that.getMatriculationNumber();
 	}

@@ -17,6 +17,7 @@ public class ChainList {
 	public void create(Student[] data) {
 		for(int i=0;i<data.length;i++) {
 			this.add(data[i]);
+			System.out.println(i);
 		}
 	}
 	
@@ -37,6 +38,7 @@ public class ChainList {
 	}
 
 	public int size() {
+		reset();
 		int size=0;
 		while(this.hasNext()) {
 			current = current.getNext();
@@ -47,8 +49,8 @@ public class ChainList {
 	}
 	
 	public boolean hasNext() {
-		if(current.getNext() != null) return true;
-		return false;
+		if(current == null) return false;
+		return true;
 	}
 	
 	public Student get(int index) {
@@ -56,6 +58,7 @@ public class ChainList {
 	}
 	
 	private ListElement getElement(int index) {
+		reset();
 		for(int i=0;i<index;i++) {
 			next();
 		}
@@ -143,7 +146,7 @@ public class ChainList {
 		if(result < 1) {
 			ListElement after = getElement(index);
 			element.setNext(after);
-			if(size>1) {
+			if(size>1 && index != 0) {
 				ListElement before = getElement(index-1);
 				before.setNext(element);
 			} 
