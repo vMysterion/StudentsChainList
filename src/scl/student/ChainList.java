@@ -10,26 +10,13 @@ public class ChainList {
 	
 	public ChainList(Student[] data, boolean sort) {
 		this.sort = sort;
+		create(data);
 	}
 	
-	@Deprecated
 	public void create(Student[] data) {
 		for(int i=0;i<data.length;i++) {
-			ListElement element = new ListElement();
-			element.setContent(data[i]);
-			element.setNext(null);
-			if(i==0) {
-				this.head = element;
-			}
-			if(i!=0) {
-				current.setNext(element);
-			}
-			if(i==data.length-1) {
-				this.tail = element;
-			}
-			current = element;
+			this.add(data[i]);
 		}
-		reset();
 	}
 	
 	public void empty() {
@@ -146,7 +133,7 @@ public class ChainList {
 				}
 			}
 			loop = hasNext();
-			if(result <=0) {
+			if(result < 1) {
 				loop = false;
 			}
 			index++;

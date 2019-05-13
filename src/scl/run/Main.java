@@ -24,6 +24,8 @@ public class Main {
 	
 	private BufferedReader br;
 	private Student[] data;
+	private ChainList nameList;
+	private ChainList numberList;
 	private StudentReader sr;
 	private StudentWriter sw;
 	private boolean loop;
@@ -44,6 +46,9 @@ public class Main {
 		} catch (IOException e) {
 			System.out.println("Error reading data from file - "+e.getMessage());
 		}
+		
+		nameList = new ChainList(data, false);
+		numberList = new ChainList(data, true);
 	}
 	
 	public static void main(String[] args) {
@@ -65,7 +70,7 @@ public class Main {
 	}
 	
 	private void execute(String command) {
-		switch(command) {
+		switch(command.toUpperCase()) {
 		case "L": empty(); break;
 		case "ZN": sortName(); break;
 		case "ZM": sortMN(); break;
@@ -85,12 +90,21 @@ public class Main {
 		
 	}
 	
+	private void printList(ChainList cl) {
+		System.out.println("\n- - - Studentes - - -");
+		while(cl.hasNext()) {
+			Student current = cl.next();
+			System.out.println(current.getName()+" - "+current.getMatriculationNumber());
+		}
+		System.out.println();
+	}
+	
 	private void sortName() {
-		
+		printList(nameList);
 	}
 	
 	private void sortMN() {
-		
+		printList(numberList);
 	}
 	
 	private void searchName() {

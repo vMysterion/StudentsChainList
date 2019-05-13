@@ -10,7 +10,7 @@ public class StudentReader {
 	private BufferedReader br;
 	
 	public StudentReader() throws FileNotFoundException {
-		file = new File("students.txt");
+		file = new File("students/students.txt");
 		br = new BufferedReader(new FileReader(file));
 	}
 	

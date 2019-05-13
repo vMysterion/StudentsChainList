@@ -12,10 +12,10 @@ public class StudentWriter {
 	public StudentWriter() throws IOException {
 		file = new File("students/students.txt");
 		if(!file.exists()) file.createNewFile();
-		pw = new PrintWriter(new FileWriter(file), true);
 	}
 	
-	public void writeData(Student[] data) {
+	public void writeData(Student[] data) throws IOException {
+		pw = new PrintWriter(new FileWriter(file), true);
 		for(int i=0;i<data.length;i++) {
 			pw.println(data[i].getName()+","+data[i].getMatriculationNumber());
 		}
