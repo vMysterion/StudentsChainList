@@ -58,7 +58,6 @@ public class Main {
 			try {
 				input = br.readLine();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			execute(input);

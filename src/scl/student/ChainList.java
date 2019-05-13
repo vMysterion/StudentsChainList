@@ -5,11 +5,14 @@ public class ChainList {
 	private ListElement head;
 	private ListElement tail;
 	private ListElement current;
+	private ListElement last;
+	private boolean sort; //true number - false name
 	
-	public ChainList(Student[] data) {
-		create(data);
+	public ChainList(Student[] data, boolean sort) {
+		this.sort = sort;
 	}
 	
+	@Deprecated
 	public void create(Student[] data) {
 		for(int i=0;i<data.length;i++) {
 			ListElement element = new ListElement();
@@ -51,6 +54,7 @@ public class ChainList {
 			current = current.getNext();
 			size++;
 		}
+		reset();
 		return size;
 	}
 	
@@ -111,12 +115,57 @@ public class ChainList {
 		return removed;
 	}
 	
-	public void add(Student newObj) {
+	public void add(Student student) {
+		if(head == null && tail == null && current == null) {
+			ListElement element = new ListElement(student, null);
+			head = element;
+			tail = element;
+			current = element;
+			return;
+		}
 		
-	}
-	
-	private void add(Student stud, int index) {
+		ListElement element = new ListElement(student, null);
+		int size = size();
+		int result = 1;
+		int index = -1;
+		boolean loop = hasNext();
+		while(loop) {
+			Student comp = next();
+			Student curr = element.getContent();
+			if(sort) {
+				if(curr.getMatriculationNumber() < comp.getMatriculationNumber()) {
+					result = -1;
+				} else if(curr.getMatriculationNumber() == comp.getMatriculationNumber()) {
+					result = 0;
+				}
+			} else {
+				if(curr.getName().compareTo(comp.getName()) < 0) {
+					result = -1;
+				} else if(curr.getName().equals(comp.getName())) {
+					result = 0;
+				}
+			}
+			loop = hasNext();
+			if(result <=0) {
+				loop = false;
+			}
+			index++;
+		}
 		
+		if(result < 1) {
+			ListElement after = getElement(index);
+			element.setNext(after);
+			if(size>1) {
+				ListElement before = getElement(index-1);
+				before.setNext(element);
+			} 
+			if(index == 0) {
+				head = element;
+			}
+		} else {
+			ListElement before = tail;
+			before.setNext(element);
+			tail = element;
+		}
 	}
-	
 }
