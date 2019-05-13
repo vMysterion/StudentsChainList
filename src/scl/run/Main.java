@@ -1,8 +1,13 @@
 package scl.run;
 
+import scl.student.*;
+import scl.writer.*;
+import scl.reader.*;
+import java.io.*;
+
 public class Main {
 	
-	String menu =""
+	private String menu =""
 			+ "Students Chain List\n"
 			+ "L  - Empty the list\n"
 			+ "ZN - Sort by name and print list\n"
@@ -17,12 +22,44 @@ public class Main {
             + "S  - Save data\n"
             + "E  - End programm\n";
 	
+	private BufferedReader br;
+	private Student[] data;
+	private StudentReader sr;
+	private StudentWriter sw;
+	
+	public Main() {
+		br = new BufferedReader(new InputStreamReader(System.in));
+		try {
+			sr = new StudentReader();
+			sw = new StudentWriter();
+		} catch (FileNotFoundException e1) {
+			System.out.println("Error creating reader - "+e.getMessage());
+		} catch (IOException e) {
+			System.out.println("Error creating writer - "+e.getMessage());
+		}
+		try {
+			data = sr.readFile();
+		} catch (IOException e) {
+			System.out.println("Error reading data from file - "+e.getMessage());
+		}
+	}
+	
 	public static void main(String[] args) {
 		new Main().run();
 	}
 	
 	public void run() {
-		System.out.println(menu);
+		while(true) {
+			System.out.println(menu);
+			System.out.print(">>> ");
+			String input = null;
+			try {
+				input = br.readLine();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 	}
 	
 }
