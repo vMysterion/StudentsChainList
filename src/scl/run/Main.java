@@ -35,7 +35,7 @@ public class Main {
 			sr = new StudentReader();
 			sw = new StudentWriter();
 		} catch (FileNotFoundException e1) {
-			System.out.println("Error creating reader - "+e.getMessage());
+			System.out.println("Error creating reader - "+e1.getMessage());
 		} catch (IOException e) {
 			System.out.println("Error creating writer - "+e.getMessage());
 		}
