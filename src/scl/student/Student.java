@@ -1,6 +1,6 @@
 package scl.student;
 
-public class Student {
+public class Student implements Comparable<Student> {
 
 	private int mn;
 	private String name;
@@ -16,6 +16,11 @@ public class Student {
 	
 	public String getName() {
 		return this.name;
+	}
+	
+	@Override
+	public int compareTo(Student that) {
+		return this.mn - that.getMatriculationNumber();
 	}
 	
 }

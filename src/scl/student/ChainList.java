@@ -7,6 +7,10 @@ public class ChainList<T> {
 	private ListElement<T> current;
 	
 	public ChainList(T[] data) {
+		create(data);
+	}
+	
+	public void create(T[] data) {
 		for(int i=0;i<data.length;i++) {
 			ListElement<T> element = new ListElement<T>();
 			element.setContent(data[i]);
@@ -14,19 +18,27 @@ public class ChainList<T> {
 			if(i==0) {
 				this.head = element;
 			}
-			current = element;
-			if(i!=data.length-1 && i!=0) {
+			if(i!=0) {
 				current.setNext(element);
 			}
-			if(1==data.length-1) {
+			if(i==data.length-1) {
 				this.tail = element;
 			}
+			current = element;
 		}
+		reset();
+	}
+	
+	public void empty() {
+		head = null;
+		tail = null;
+		current = null;
 	}
 	
 	public T next() {
+		ListElement<T> next = current;
 		current = current.getNext();
-		return current.getContent();
+		return next.getContent();
 	}
 	
 	public void reset() {
@@ -47,4 +59,45 @@ public class ChainList<T> {
 		return false;
 	}
 	
+	public T get(int index) {
+		return getElement(index).getContent();
+	}
+	
+	private ListElement<T> getElement(int index) {
+		for(int i=0;i<index;i++) {
+			next();
+		}
+		return current;
+	}
+	
+	public void removeIndex(int index) {
+		ListElement<T> before = null;
+		ListElement<T> after = null;
+		if(index == 0) {
+			head = getElement(1);
+			return;
+		} else if(index == size()) {
+			tail = getElement(size()-1);
+			return;
+		}
+		before = getElement(index-1);
+		after = getElement(index+1);
+		before.setNext(after);
+	}
+	
+	/*
+	public int remove(String name) {
+		int size = size();
+		for(int i=0;i<size;i++) {
+			T comp = next();
+			if(name.equals("")) {
+				
+			}
+		}
+	}
+	
+	public int remove(int mn) {
+		
+	}
+	*/
 }
