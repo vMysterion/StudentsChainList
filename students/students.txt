@@ -1,5 +1,6 @@
-Kevin Spacey,13333337
-Nicolas Cage,13547632
-Kartoffel Rodler,17789320
-Thor Odison,32779354
-Angus Young,10121312
+Kevin Spacey,10
+Nicolas Cage,20
+Kartoffel Rodler,30
+Thor Odison,40
+Angus Young,50
+Acker Walze,666

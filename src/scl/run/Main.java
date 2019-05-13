@@ -117,7 +117,46 @@ public class Main {
 	}
 	
 	private void insert() {
-		
+		String name = "";
+		String mn = "";
+		int number = 0;
+		boolean loop = true;
+		while(loop) {
+			System.out.print("\nName: ");
+			try {
+				name = br.readLine();
+				loop = false;
+			} catch(IOException ioe) {
+				System.out.println("Error reading input - "+ioe.getMessage());
+			}
+		}
+		loop = true;
+		while(loop) {
+			System.out.print("Matriculation Number: ");
+			try {
+				mn = br.readLine();
+				number = Integer.parseInt(mn);
+				loop = false;
+			} catch(IOException ioe) {
+				System.out.println("Error reading input - "+ioe.getMessage());
+			} catch(NumberFormatException nfe) {
+				System.out.println("Number must be an integer!");
+			}
+		}
+		System.out.println();
+		Student student = new Student(name, number);
+		addToArray(student);
+		nameList.add(student);
+		numberList.add(student);
+	}
+	
+	private void addToArray(Student student) {
+		Student[] ndata = new Student[data.length+1];
+		for(int i=0;i<data.length;i++) {
+			ndata[i] = data[i];
+		}
+		ndata[ndata.length-1] = student;
+		data = ndata;
 	}
 	
 	private void removeName() {
@@ -137,7 +176,11 @@ public class Main {
 	}
 	
 	private void save() {
-		
+		try {
+			sw.writeData(data);
+		} catch (IOException e) {
+			System.out.println("Error writing to file - "+e.getMessage());
+		}
 	}
 	
 	private void exit() {

@@ -158,5 +158,6 @@ public class ChainList {
 			before.setNext(element);
 			tail = element;
 		}
+		reset();
 	}
 }
