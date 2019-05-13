@@ -11,6 +11,7 @@ public class ChainList {
 	public ChainList(Student[] data, boolean sort) {
 		this.sort = sort;
 		create(data);
+		reset();
 	}
 	
 	public void create(Student[] data) {

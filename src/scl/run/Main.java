@@ -97,6 +97,7 @@ public class Main {
 			System.out.println(current.getName()+" - "+current.getMatriculationNumber());
 		}
 		System.out.println();
+		cl.reset();
 	}
 	
 	private void sortName() {
