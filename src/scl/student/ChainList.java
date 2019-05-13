@@ -111,4 +111,10 @@ public class ChainList {
 		return removed;
 	}
 	
+	public void add(Student newObj) {
+		ListElement newEle = new ListElement(newObj, null);
+		tail.setNext(newEle);
+		tail = newEle;
+	}
+	
 }
