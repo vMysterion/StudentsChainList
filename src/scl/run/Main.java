@@ -9,4 +9,12 @@ public class Main {
 			+ "ZM - Sort by matriculation number and print list\n"
 			+ "";
 	
+	public static void main(String[] args) {
+		new Main().run();
+	}
+	
+	public void run() {
+		System.out.println(menu);
+	}
+	
 }
