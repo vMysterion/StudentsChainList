@@ -87,17 +87,28 @@ public class ChainList {
 	
 	public int remove(String name) {
 		int size = size();
-		int remove = 0;
+		int removed = 0;
 		for(int i=0;i<size;i++) {
 			Student comp = next();
 			if(name.equals(comp.getName())) {
-				
+				removeIndex(i);
+				removed++;
 			}
 		}
+		return removed;
 	}
 	
 	public int remove(int mn) {
-		
+		int size = size();
+		int removed = 0;
+		for(int i=0;i<size;i++) {
+			Student comp = next();
+			if(mn == comp.getMatriculationNumber()) {
+				removeIndex(i);
+				removed++;
+			}
+		}
+		return removed;
 	}
-	*/
+	
 }
