@@ -4,6 +4,8 @@ import scl.student.*;
 import scl.writer.*;
 import scl.reader.*;
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Main {
 	
@@ -117,7 +119,14 @@ public class Main {
 		} catch(IOException ioe) {
 			System.out.println("Error reading input - "+ioe.getMessage());
 		}
-		printStudent(search(sName));
+		List<Student> students = search(sName);
+		if(students.isEmpty()) {
+			System.out.println("No Students found.");
+			return;
+		}
+		for(int i=0;i<students.size();i++) {
+			printStudent(students.get(i));
+		}
 		nameList.reset();
 		System.out.println();
 	}
@@ -143,8 +152,14 @@ public class Main {
 		} catch(NumberFormatException nfe) {
 			System.out.println("Number must be an integer!");
 		}
-		printStudent(search(mNumber));
+		Student student = search(mNumber);
+		if(student == null) {
+			System.out.println("No Students found.");
+			return;
+		}
+		printStudent(student);
 		nameList.reset();
+		System.out.println();
 	}
 	
 	/* sortiert zn nach lowercase uppercase?
@@ -161,14 +176,15 @@ public class Main {
 		return null;
 	}
 	
-	private Student search(String Name) {
+	private List<Student> search(String Name) {
+		List<Student> students = new ArrayList<Student>();
 		while(nameList.hasNext()) {
 			Student current = nameList.next();
 			if(current.getName().toLowerCase().equals(Name.toLowerCase())) {
-				return current;
+				students.add(current);
 			}
 		}
-		return null;
+		return students;
 	}
 	
 	
@@ -236,17 +252,20 @@ public class Main {
 		} catch(IOException ioe1) {
 			System.out.println("Error reading input - "+ioe1.getMessage());
 		}
-		Student student = search(name);
+		List<Student> students = search(name);
 		nameList.reset();
-		if(student==null) {
+		if(students.isEmpty()) {
 			System.out.println("No student found");
 		}else {
-			nameList.remove(name);
-			numberList.remove(name);
-			nameList.reset();
-			numberList.reset();
-			removeFromArray(student);
-			System.out.println("Student removed\n");
+			for(int i=0;i<students.size();i++) {
+				Student curr = students.get(i);
+				nameList.remove(curr.getName());
+				numberList.remove(curr.getName());
+				nameList.reset();
+				numberList.reset();
+				removeFromArray(curr);
+				System.out.println("Student "+curr.getName()+" removed\n");
+			}
 		}
 		
 	}
@@ -263,21 +282,22 @@ public class Main {
 		}
 		Student student = search(mNumber);
 		nameList.reset();
-		if(student==null) {
+		if(student == null) {
 			System.out.println("No student found");
 		}else {
-			nameList.remove(mNumber);
-			numberList.remove(mNumber);
+			nameList.remove(student.getMatriculationNumber());
+			numberList.remove(student.getMatriculationNumber());
 			nameList.reset();
 			numberList.reset();
 			removeFromArray(student);
-			System.out.println("Student removed\n");
+			System.out.println("Student "+student.getName()+" removed\n");
 		}
 	}
 	
 	private void changeName() {
 		String input="";
-		Student student=null;
+		List<Student> students =null;
+		Student student = null;
 		boolean loop = true;
 		while(loop) {
 			System.out.print("Choose student:\n"
@@ -299,11 +319,27 @@ public class Main {
 				} catch(IOException ioe1) {
 					System.out.println("Error reading input - "+ioe1.getMessage());
 				} 
-				student = search(name);
+				students = search(name);
 				nameList.reset();
-				if(student==null) {
+				if(students.isEmpty()) {
 					System.out.println("No student found");
 				}else {
+					boolean iLoop = true;
+					while(iLoop) {
+						System.out.println("Choose a student to change the name of:");
+						for(int i=0;i<students.size();i++) {
+							System.out.println((i+1)+": "+students.get(i));
+						}
+						System.out.print(">>> ");
+						int num = InputReader.readInt();
+						if(num == -1) {
+							System.out.println("Input must be a number!");
+						} else {
+							student = students.get(num);
+							iLoop = false;
+						}
+					}
+					
 					System.out.print("New name: ");
 					try {
 						String newName=br.readLine();
@@ -359,7 +395,8 @@ public class Main {
 	
 	private void changeMN() {
 		String input="";
-		Student student=null;
+		List<Student> students =null;
+		Student student = null;
 		boolean loop = true;
 		while(loop) {
 			System.out.print("Choose student:\n"
@@ -381,11 +418,26 @@ public class Main {
 				} catch(IOException ioe1) {
 					System.out.println("Error reading input - "+ioe1.getMessage());
 				} 
-				student = search(name);
+				students = search(name);
 				nameList.reset();
-				if(student==null) {
+				if(students.isEmpty()) {
 					System.out.println("No student found");
 				}else {
+					boolean iLoop = true;
+					while(iLoop) {
+						System.out.println("Choose a student to change the name of:");
+						for(int i=0;i<students.size();i++) {
+							System.out.println((i+1)+": "+students.get(i));
+						}
+						System.out.print(">>> ");
+						int num = InputReader.readInt();
+						if(num == -1) {
+							System.out.println("Input must be a number!");
+						} else {
+							student = students.get(num);
+							iLoop = false;
+						}
+					}
 					System.out.print("New matriculation number: ");
 					try {
 						int newMN=Integer.parseInt(br.readLine());
