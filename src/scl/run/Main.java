@@ -111,32 +111,27 @@ public class Main {
 	private void searchName() {
 		System.out.print("\nName: ");
 		String sName="";
-		boolean studentExists=false;
 		try {
 			sName=br.readLine();
+
 		} catch(IOException ioe) {
 			System.out.println("Error reading input - "+ioe.getMessage());
 		}
-	
-		while(nameList.hasNext()) {
-			Student current = nameList.next();
-			if(current.getName().equals(sName)) {
-				System.out.println(current.getName()+" - "+current.getMatriculationNumber());
-				studentExists=true;
-			}
-		}
-		if(!studentExists) {
-			System.out.println("No student found");
-		}
-		System.out.println();
+		Student student=search(sName);
 		nameList.reset();
+		if(student==null) {
+			System.out.println("No student found");
+		}else {
+			System.out.println(student.getName()+" - "+student.getMatriculationNumber());
+		}
+	
+		System.out.println();
 	}
 	
 	private void searchMN() {
 		System.out.print("\nMatriculation number: ");
 		String mn="";
 		int mNumber=0;
-		boolean studentExists=false;
 		try {
 			mn=br.readLine();
 			mNumber=Integer.parseInt(mn);
@@ -145,20 +140,39 @@ public class Main {
 		} catch(NumberFormatException nfe) {
 			System.out.println("Number must be an integer!");
 		}
+		Student student=search(mNumber);
+		nameList.reset();
+		if(student==null) {
+			System.out.println("No student found");
+		}else {
+			System.out.println(student.getName()+" - "+student.getMatriculationNumber());
+		}
+		System.out.println();
+	}
 	
+	/* sortiert zn nach lowercase uppercase?
+	 * evtl. in chainlist rein?
+	 */
+	private Student search(int mNumber) {
 		while(nameList.hasNext()) {
 			Student current = nameList.next();
 			if(current.getMatriculationNumber()==mNumber) {
-				System.out.println(current.getName()+" - "+current.getMatriculationNumber());
-				studentExists=true;
+				return current;
 			}
 		}
-		if(!studentExists) {
-			System.out.println("No student found");
-		}
-		System.out.println();
-		nameList.reset();
+		return null;
 	}
+	
+	private Student search(String Name) {
+		while(nameList.hasNext()) {
+			Student current = nameList.next();
+			if(current.getName().toLowerCase().equals(Name.toLowerCase())) {
+				return current;
+			}
+		}
+		return null;
+	}
+	
 	
 	private void insert() {
 		String name = "";
