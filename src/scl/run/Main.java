@@ -117,14 +117,17 @@ public class Main {
 		} catch(IOException ioe) {
 			System.out.println("Error reading input - "+ioe.getMessage());
 		}
-		Student student=search(sName);
+		printStudent(search(sName));
 		nameList.reset();
+		System.out.println();
+	}
+	
+	private void printStudent(Student student) {
 		if(student==null) {
 			System.out.println("No student found");
 		}else {
 			System.out.println(student.getName()+" - "+student.getMatriculationNumber());
 		}
-	
 		System.out.println();
 	}
 	
@@ -140,17 +143,12 @@ public class Main {
 		} catch(NumberFormatException nfe) {
 			System.out.println("Number must be an integer!");
 		}
-		Student student=search(mNumber);
+		printStudent(search(mNumber));
 		nameList.reset();
-		if(student==null) {
-			System.out.println("No student found");
-		}else {
-			System.out.println(student.getName()+" - "+student.getMatriculationNumber());
-		}
-		System.out.println();
 	}
 	
 	/* sortiert zn nach lowercase uppercase?
+	 * man könnte mat nummer einlesen auslager ist in 3+methoden
 	 * evtl. in chainlist rein?
 	 */
 	private Student search(int mNumber) {
@@ -218,19 +216,209 @@ public class Main {
 	}
 	
 	private void removeName() {
+		String name="";
+		System.out.print("Name: ");
+		try {
+			name=br.readLine();
+		} catch(IOException ioe1) {
+			System.out.println("Error reading input - "+ioe1.getMessage());
+		}
+		Student student = search(name);
+		nameList.reset();
+		if(student==null) {
+			System.out.println("No student found");
+		}else {
+			nameList.remove(name);
+			numberList.remove(name);
+			nameList.reset();
+			numberList.reset();
+			System.out.println("Student removed\n");
+		}
 		
 	}
 	
 	private void removeMN() {
-		
+		int mNumber=0;
+		System.out.print("Matriculation number: ");
+		try {
+			mNumber=Integer.parseInt(br.readLine());
+		} catch(IOException ioe1) {
+			System.out.println("Error reading input - "+ioe1.getMessage());
+		}catch(NumberFormatException nfe) {
+			System.out.println("Number must be an integer!");
+		}
+		Student student = search(mNumber);
+		nameList.reset();
+		if(student==null) {
+			System.out.println("No student found");
+		}else {
+			nameList.remove(mNumber);
+			numberList.remove(mNumber);
+			nameList.reset();
+			numberList.reset();
+			System.out.println("Student removed\n");
+		}
 	}
 	
 	private void changeName() {
+		String input="";
+		Student student=null;
+		boolean loop = true;
+		while(loop) {
+			System.out.print("Choose student:\n"
+								+"n - by name\n"
+								+"m - by matriculation number\n"
+								+">>> ");
+			try {
+				input = br.readLine();
+			} catch(IOException ioe) {
+				System.out.println("Error reading input - "+ioe.getStackTrace());
+				System.out.println("Error reading input - "+ioe.getMessage());
+			}
+			if(input.toLowerCase().equals("n")) {	
+				loop=false;
+				String name="";
+				System.out.print("Name: ");
+				try {
+					name=br.readLine();
+				} catch(IOException ioe1) {
+					System.out.println("Error reading input - "+ioe1.getMessage());
+				} 
+				student = search(name);
+				nameList.reset();
+				if(student==null) {
+					System.out.println("No student found");
+				}else {
+					System.out.print("New name: ");
+					try {
+						String newName=br.readLine();
+						int mn=student.getMatriculationNumber();
+						nameList.remove(name);
+					//	nameList.reset();
+						nameList.add(new Student(newName,mn));
+						numberList.remove(name);
+					//	numberList.reset();
+						numberList.add(new Student(newName,mn));
+				
+					} catch(IOException ioe2) {
+						System.out.println("Error reading input - "+ioe2.getMessage());
+					}	
+				}
+			
+			}else if(input.toLowerCase().equals("m")) {
+				loop=false;
+				String mn="";
+				int mNumber=0;
+				System.out.print("Matriculation number: ");
+				try {
+					mn=br.readLine();
+					mNumber=Integer.parseInt(mn);
+				} catch(IOException ioe1) {
+					System.out.println("Error reading input - "+ioe1.getMessage());
+				} catch(NumberFormatException nfe) {
+					System.out.println("Number must be an integer!");
+				}
+				student = search(mNumber);
+				nameList.reset();
+				if(student==null) {
+					System.out.println("No student found");
+				}else {
+					System.out.println("New name: ");
+					try {
+						String newName=br.readLine();
+						nameList.remove(mNumber);
+						nameList.add(new Student(newName,mNumber));
+						numberList.remove(mNumber);
+						numberList.add(new Student(newName,mNumber));
+					} catch(IOException ioe2) {
+						System.out.println("Error reading input - "+ioe2.getMessage());
+					}	
+				}
+			}else {
+				System.out.println("Error reading input");
+			}
+		}
+		}	
 		
-	}
+	
 	
 	private void changeMN() {
-		
+		String input="";
+		Student student=null;
+		boolean loop = true;
+		while(loop) {
+			System.out.print("Choose student:\n"
+								+"n - by name\n"
+								+"m - by matriculation number\n"
+								+">>> ");
+			try {
+				input = br.readLine();
+			} catch(IOException ioe) {
+				System.out.println("Error reading input - "+ioe.getStackTrace());
+				System.out.println("Error reading input - "+ioe.getMessage());
+			}
+			if(input.toLowerCase().equals("n")) {	
+				loop=false;
+				String name="";
+				System.out.print("Name: ");
+				try {
+					name=br.readLine();
+				} catch(IOException ioe1) {
+					System.out.println("Error reading input - "+ioe1.getMessage());
+				} 
+				student = search(name);
+				nameList.reset();
+				if(student==null) {
+					System.out.println("No student found");
+				}else {
+					System.out.print("New matriculation number: ");
+					try {
+						int newMN=Integer.parseInt(br.readLine());
+						String oldName=student.getName();
+						numberList.remove(name);
+						numberList.add(new Student(oldName,newMN));
+					} catch(IOException ioe2) {
+						System.out.println("Error reading input - "+ioe2.getMessage());
+					}catch(NumberFormatException nfe) {
+						System.out.println("Number must be an integer!");
+					}	
+				}
+			
+			}else if(input.toLowerCase().equals("m")) {
+				loop=false;
+				String mn="";
+				int mNumber=0;
+				System.out.print("Matriculation number: ");
+				try {
+					mn=br.readLine();
+					mNumber=Integer.parseInt(mn);
+				} catch(IOException ioe1) {
+					System.out.println("Error reading input - "+ioe1.getMessage());
+				} catch(NumberFormatException nfe) {
+					System.out.println("Number must be an integer!");
+				}
+				student = search(mNumber);
+				nameList.reset();
+				if(student==null) {
+					System.out.println("No student found");
+				}else {
+					System.out.print("New matriculation number:");
+					try {
+						int newMN=Integer.parseInt(br.readLine());
+						String oldName=student.getName();
+						numberList.remove(mNumber);
+						numberList.add(new Student(oldName,newMN));
+						
+					} catch(IOException ioe2) {
+						System.out.println("Error reading input - "+ioe2.getMessage());
+					}catch(NumberFormatException nfe) {
+						System.out.println("Number must be an integer!");
+					}	
+				}
+			}else {
+				System.out.println("Error reading input");
+			}
+		}
 	}
 	
 	private void save() {
