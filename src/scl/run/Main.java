@@ -59,6 +59,8 @@ public class Main {
 	
 	public void run() {
 		while(loop) {
+			nameList.reset();
+			numberList.reset();
 			System.out.println(menu);
 			System.out.print(">>> ");
 			String input = null;
@@ -172,6 +174,7 @@ public class Main {
 				return current;
 			}
 		}
+		nameList.reset();
 		return null;
 	}
 	
@@ -183,6 +186,7 @@ public class Main {
 				students.add(current);
 			}
 		}
+		nameList.reset();
 		return students;
 	}
 	
@@ -319,7 +323,7 @@ public class Main {
 					System.out.println("Error reading input - "+ioe1.getMessage());
 				} 
 				students = search(name);
-				nameList.reset();
+				//nameList.reset();
 				if(students.isEmpty()) {
 					System.out.println("No student found");
 				}else {
@@ -369,7 +373,7 @@ public class Main {
 					System.out.println("Number must be an integer!");
 				}
 				student = search(mNumber);
-				nameList.reset();
+				//nameList.reset();
 				if(student==null) {
 					System.out.println("No student found");
 				}else {
@@ -443,6 +447,8 @@ public class Main {
 						String oldName=student.getName();
 						numberList.remove(name);
 						numberList.add(new Student(oldName,newMN));
+						nameList.remove(name);
+						nameList.add(new Student(oldName,newMN));
 					} catch(IOException ioe2) {
 						System.out.println("Error reading input - "+ioe2.getMessage());
 					}catch(NumberFormatException nfe) {
@@ -474,6 +480,8 @@ public class Main {
 						String oldName=student.getName();
 						numberList.remove(mNumber);
 						numberList.add(new Student(oldName,newMN));
+						nameList.remove(mNumber);
+						nameList.add(new Student(oldName,newMN));
 						
 					} catch(IOException ioe2) {
 						System.out.println("Error reading input - "+ioe2.getMessage());
