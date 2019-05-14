@@ -330,7 +330,7 @@ public class Main {
 							System.out.println((i+1)+": "+students.get(i).getName());
 						}
 						System.out.print(">>> ");
-						int num = InputReader.readInt();
+						int num = InputReader.readInt()-1;
 						if(num == -1) {
 							System.out.println("Input must be a number!");
 						} else {
@@ -429,7 +429,7 @@ public class Main {
 							System.out.println((i+1)+": "+students.get(i).getName());
 						}
 						System.out.print(">>> ");
-						int num = InputReader.readInt();
+						int num = InputReader.readInt()-1;
 						if(num == -1) {
 							System.out.println("Input must be a number!");
 						} else {
