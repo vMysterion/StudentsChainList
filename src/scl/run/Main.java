@@ -215,6 +215,19 @@ public class Main {
 		data = ndata;
 	}
 	
+	private void removeFromArray(Student student) {
+		for(int i=0;i<data.length;i++) {
+			if(data[i].equals(student)) {
+				data[i] = data[data.length-1];
+			}
+		}
+		Student[] ndata = new Student[data.length-1];
+		for(int i=0;i<data.length;i++) {
+			ndata[i] = data[i];
+		}
+		data = ndata;
+	}
+	
 	private void removeName() {
 		String name="";
 		System.out.print("Name: ");
@@ -232,6 +245,7 @@ public class Main {
 			numberList.remove(name);
 			nameList.reset();
 			numberList.reset();
+			removeFromArray(student);
 			System.out.println("Student removed\n");
 		}
 		
@@ -256,6 +270,7 @@ public class Main {
 			numberList.remove(mNumber);
 			nameList.reset();
 			numberList.reset();
+			removeFromArray(student);
 			System.out.println("Student removed\n");
 		}
 	}
