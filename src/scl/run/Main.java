@@ -137,7 +137,6 @@ public class Main {
 		}else {
 			System.out.println(student.getName()+" - "+student.getMatriculationNumber());
 		}
-		System.out.println();
 	}
 	
 	private void searchMN() {
