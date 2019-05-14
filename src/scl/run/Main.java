@@ -327,7 +327,7 @@ public class Main {
 					while(iLoop) {
 						System.out.println("Choose a student to change the name of:");
 						for(int i=0;i<students.size();i++) {
-							System.out.println((i+1)+": "+students.get(i));
+							System.out.println((i+1)+": "+students.get(i).getName());
 						}
 						System.out.print(">>> ");
 						int num = InputReader.readInt();
@@ -426,7 +426,7 @@ public class Main {
 					while(iLoop) {
 						System.out.println("Choose a student to change the name of:");
 						for(int i=0;i<students.size();i++) {
-							System.out.println((i+1)+": "+students.get(i));
+							System.out.println((i+1)+": "+students.get(i).getName());
 						}
 						System.out.print(">>> ");
 						int num = InputReader.readInt();
