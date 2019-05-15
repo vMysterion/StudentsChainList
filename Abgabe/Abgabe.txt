@@ -1,0 +1,5 @@
+Wie verhält sich das Programm bei einem doppeltem Namen?
+- Die Student Objekte werden anhand der Matrikulationsnummer identifiziert. Doppelte Namen sind also zulässig. In der nach Namen sortierten Liste wird ein mehrfach
+  vorkommender Name so verwaltet, das die Objekte danach kommen, vor dem jeweils ersten Objekt einsortiert werden. Sprich der Student mit dem 2. vorkommen des
+  Namens wird vor das Objekt mit dem Namen das als erstes vorkommt sortiert.
+  
