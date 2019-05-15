@@ -213,7 +213,12 @@ public class Main {
 			try {
 				mn = br.readLine();
 				number = Integer.parseInt(mn);
-				loop = false;
+				if(!(checkMnumber(number))) {
+					System.out.print("matriculation number already exists\n");	
+				}else {
+				
+				loop = false;}
+			
 			} catch(IOException ioe) {
 				System.out.println("Error reading input - "+ioe.getMessage());
 			} catch(NumberFormatException nfe) {
@@ -443,19 +448,28 @@ public class Main {
 							iLoop = false;
 						}
 					}
-					System.out.print("New matriculation number: ");
-					try {
-						int newMN=Integer.parseInt(br.readLine());
-						String oldName=student.getName();
-						numberList.remove(name);
-						numberList.add(new Student(oldName,newMN));
-						nameList.remove(name);
-						nameList.add(new Student(oldName,newMN));
-					} catch(IOException ioe2) {
-						System.out.println("Error reading input - "+ioe2.getMessage());
-					}catch(NumberFormatException nfe) {
-						System.out.println("Number must be an integer!");
-					}	
+					iLoop=true;
+					while(iLoop) {
+						System.out.print("New matriculation number: ");
+						try {
+							int newMN=Integer.parseInt(br.readLine());
+							
+							if(!(checkMnumber(newMN))) {
+								System.out.print("matriculation number already exists\n");	
+							}else {
+								iLoop=false;
+								String oldName=student.getName();
+								numberList.remove(name);
+								numberList.add(new Student(oldName,newMN));
+								nameList.remove(name);
+								nameList.add(new Student(oldName,newMN));
+							}
+							} catch(IOException ioe2) {
+								System.out.println("Error reading input - "+ioe2.getMessage());
+							}catch(NumberFormatException nfe) {
+								System.out.println("Number must be an integer!");
+							}
+						}
 				}
 			
 			}else if(input.toLowerCase().equals("m")) {
@@ -476,25 +490,43 @@ public class Main {
 				if(student==null) {
 					System.out.println("No student found");
 				}else {
-					System.out.print("New matriculation number:");
-					try {
-						int newMN=Integer.parseInt(br.readLine());
-						String oldName=student.getName();
-						numberList.remove(mNumber);
-						numberList.add(new Student(oldName,newMN));
-						nameList.remove(mNumber);
-						nameList.add(new Student(oldName,newMN));
-						
-					} catch(IOException ioe2) {
-						System.out.println("Error reading input - "+ioe2.getMessage());
-					}catch(NumberFormatException nfe) {
-						System.out.println("Number must be an integer!");
+					boolean iLoop=true;
+					while(iLoop) {
+						System.out.print("New matriculation number:");
+						try {
+							int newMN=Integer.parseInt(br.readLine());
+							
+							if(!(checkMnumber(newMN))) {
+								System.out.print("matriculation number already exists\n");	
+							}else {
+								iLoop=false;
+								String oldName=student.getName();
+								numberList.remove(mNumber);
+								numberList.add(new Student(oldName,newMN));
+								nameList.remove(mNumber);
+								nameList.add(new Student(oldName,newMN));
+							}
+						} catch(IOException ioe2) {
+							System.out.println("Error reading input - "+ioe2.getMessage());
+						}catch(NumberFormatException nfe) {
+							System.out.println("Number must be an integer!");
+						}
 					}	
-				}
+					}
+				
 			}else {
 				System.out.println("Error reading input");
 			}
 		}
+	}
+	
+	private boolean checkMnumber(int mn) {
+		for(int i=0;i<data.length;i++) {
+			if(data[i].getMatriculationNumber()==mn) {
+				return false;
+			}
+		}
+		return true;
 	}
 	
 	private void save() {
