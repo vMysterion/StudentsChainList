@@ -9,7 +9,7 @@ public class StudentReader {
 	private File file;
 	private BufferedReader br;
 	
-	public StudentReader() throws FileNotFoundException {
+	public StudentReader() throws FileNotFoundException, IllegalArgumentException {
 		file = new File("students/students.txt");
 		br = new BufferedReader(new FileReader(file));
 	}
@@ -31,7 +31,11 @@ public class StudentReader {
 		}
 		Student[] students = new Student[names.size()];
 		for(int i=0;i<students.length;i++) {
-			students[i] = new Student(names.get(i), numbers.get(i));
+			Student student = new Student(names.get(i), numbers.get(i));
+			for(int j=0;j<i;j++) {
+				if(students[j].equals(student)) throw new IllegalArgumentException("Student in save file with Matriculation number "+student.getMatriculationNumber()+" exists multiple times.");
+			}
+			students[i] = student;
 		}
 		
 		return students;
