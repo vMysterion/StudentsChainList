@@ -4,3 +4,8 @@ Wie verhält sich das Programm bei einem doppeltem Namen?
   Namens wird vor das Objekt mit dem Namen das als erstes vorkommt sortiert.
 - Bei Methoden, die nach Namen suchen, z.B. searchName, changeName, ... wird nach Eingabe des Namens eine Liste mit allen Studenten ausgegeben. Der User muss sich dann
   eines der Objekte aussuchen.   
+
+5 kritische Fälle:
+ 1. Jegliches einlesen von Matrikelnummern wird überprüft ob ein Integer eingelesen wurde.
+ 2. Es wird bei ändern/erstellen von Matrikelnummern mit checkMnumber() überprüft ob die Nummer schon existert.
+ 3. 
