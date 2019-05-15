@@ -47,6 +47,9 @@ public class Main {
 			data = sr.readFile();
 		} catch (IOException e) {
 			System.out.println("Error reading data from file - "+e.getMessage());
+		} catch(IllegalArgumentException iae) {
+			System.out.println("Error importing data from file - "+iae.getMessage()+"\nQuitting Program");
+			System.exit(0);
 		}
 		
 		nameList = new ChainList(data, false);
