@@ -47,6 +47,7 @@ public class Main {
 			data = sr.readFile();
 		} catch (IOException e) {
 			System.out.println("Error reading data from file - "+e.getMessage());
+			data = new Student[0];
 		} catch(IllegalArgumentException iae) {
 			System.out.println("Error importing data from file - "+iae.getMessage()+"\nQuitting Program");
 			System.exit(0);
