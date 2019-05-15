@@ -168,10 +168,6 @@ public class Main {
 		System.out.println();
 	}
 	
-	/* sortiert zn nach lowercase uppercase?
-	 * man könnte mat nummer einlesen auslager ist in 3+methoden
-	 * evtl. in chainlist rein?
-	 */
 	private Student search(int mNumber) {
 		while(nameList.hasNext()) {
 			Student current = nameList.next();
@@ -333,7 +329,6 @@ public class Main {
 					System.out.println("Error reading input - "+ioe1.getMessage());
 				} 
 				students = search(name);
-				//nameList.reset();
 				if(students.isEmpty()) {
 					System.out.println("No student found");
 				}else {
@@ -358,10 +353,8 @@ public class Main {
 						String newName=br.readLine();
 						int mn=student.getMatriculationNumber();
 						nameList.remove(name);
-					//	nameList.reset();
 						nameList.add(new Student(newName,mn));
 						numberList.remove(name);
-					//	numberList.reset();
 						numberList.add(new Student(newName,mn));
 				
 					} catch(IOException ioe2) {
@@ -383,7 +376,6 @@ public class Main {
 					System.out.println("Number must be an integer!");
 				}
 				student = search(mNumber);
-				//nameList.reset();
 				if(student==null) {
 					System.out.println("No student found");
 				}else {
