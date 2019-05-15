@@ -5,7 +5,6 @@ public class ChainList {
 	private ListElement head;
 	private ListElement tail;
 	private ListElement current;
-	private ListElement last;
 	private boolean sort; //true number - false name
 	
 	public ChainList(Student[] data, boolean sort) {

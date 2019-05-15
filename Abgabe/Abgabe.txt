@@ -8,4 +8,6 @@ Wie verhält sich das Programm bei einem doppeltem Namen?
 5 kritische Fälle:
  1. Jegliches einlesen von Matrikelnummern wird überprüft ob ein Integer eingelesen wurde.
  2. Es wird bei ändern/erstellen von Matrikelnummern mit checkMnumber() überprüft ob die Nummer schon existert.
- 3. 
+ 3. Das fehlen der students.txt Datei wird durch eine FileNotFoundException kenntlich und dort abgefangen. Ist dies der Fall wird das Programm ohne vorherige Daten ausgeführt.
+ 4. Wird die students.txt Datei gelöscht oder exisitert gar nicht erst, wird beim Speichern diese erzeugt.
+ 5. Wenn die Listen leer sind, wird das 1. einzufügende Element als head und tail gesetzt.
