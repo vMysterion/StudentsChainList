@@ -91,7 +91,9 @@ public class Main {
 	}
 	
 	private void empty() {
-		
+		numberList.empty();
+		nameList.empty();
+		data=new Student[0];
 	}
 	
 	private void printList(ChainList cl) {
