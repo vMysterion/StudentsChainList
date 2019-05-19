@@ -17,13 +17,17 @@ public class Main {
 			+ "SN - Search by name\n"
             + "SM - Search by matriculation number \n"
             + "N  - Insert student\n"
+            + "LN - Remove student by name\n"
+            + "LM - Remove student by matriculation number\n"
+            + "MN - Change name\n"
+            + "MM - Change matriculation number\n"
             + "S  - Save data\n"
             + "E  - End programm\n";
 	
 	private BufferedReader br;
 	private Student[] data;
-	private ChainList nameList;
-	private ChainList numberList;
+	private BinaryTree nameList;
+	private BinaryTree numberList;
 	private StudentReader sr;
 	private StudentWriter sw;
 	private boolean loop;
@@ -49,8 +53,8 @@ public class Main {
 			System.exit(0);
 		}
 		
-		nameList = new ChainList(data, false);
-		numberList = new ChainList(data, true);
+		nameList = new BinaryTree(data, false);
+		numberList = new BinaryTree(data, true);
 	}
 	
 	public static void main(String[] args) {
@@ -59,8 +63,8 @@ public class Main {
 	
 	public void run() {
 		while(loop) {
-			nameList.reset();
-			numberList.reset();
+			//nameList.reset();
+			//numberList.reset();
 			System.out.println(menu);
 			System.out.print(">>> ");
 			String input = null;
@@ -78,8 +82,6 @@ public class Main {
 		case "L": empty(); break;
 		case "ZN": sortName(); break;
 		case "ZM": sortMN(); break;
-		case "SN": searchName(); break;
-		case "SM": searchMN(); break;
 		case "N": insert(); break;
 		case "S": save(); break;
 		case "E": exit(); break;
@@ -92,44 +94,33 @@ public class Main {
 		data=new Student[0];
 	}
 	
-	private void printList(ChainList cl) {
-		System.out.println("\n- - - Studentes - - -");
-		while(cl.hasNext()) {
-			Student current = cl.next();
-			System.out.println(current.getName()+" - "+current.getMatriculationNumber());
+	private void printTree(TreeElement next) {
+		TreeElement left = next.getLeft();
+		TreeElement right = next.getRight();
+		
+		if(!next.hasLeft()) {
+			printStudent(next.getContent());
+			return;
+		} else {
+			printTree(left);
 		}
-		System.out.println();
-		cl.reset();
+		if (!next.hasRight()) {
+			printStudent(next.getContent());
+			return;
+		}
+		else {
+			printTree(right);
+		}
 	}
 	
 	private void sortName() {
-		printList(nameList);
+		printTree(nameList.getRoot());
 	}
 	
 	private void sortMN() {
-		printList(numberList);
+		printTree(numberList.getRoot());
 	}
 	
-	private void searchName() {
-		System.out.print("\nName: ");
-		String sName="";
-		try {
-			sName=br.readLine();
-
-		} catch(IOException ioe) {
-			System.out.println("Error reading input - "+ioe.getMessage());
-		}
-		List<Student> students = search(sName);
-		if(students.isEmpty()) {
-			System.out.println("No Students found.");
-			return;
-		}
-		for(int i=0;i<students.size();i++) {
-			printStudent(students.get(i));
-		}
-		nameList.reset();
-		System.out.println();
-	}
 	
 	private void printStudent(Student student) {
 		if(student==null) {
@@ -137,51 +128,6 @@ public class Main {
 		}else {
 			System.out.println(student.getName()+" - "+student.getMatriculationNumber());
 		}
-	}
-	
-	private void searchMN() {
-		System.out.print("\nMatriculation number: ");
-		String mn="";
-		int mNumber=0;
-		try {
-			mn=br.readLine();
-			mNumber=Integer.parseInt(mn);
-		} catch(IOException ioe) {
-			System.out.println("Error reading input - "+ioe.getMessage());
-		} catch(NumberFormatException nfe) {
-			System.out.println("Number must be an integer!");
-		}
-		Student student = search(mNumber);
-		if(student == null) {
-			System.out.println("No Students found.");
-			return;
-		}
-		printStudent(student);
-		nameList.reset();
-		System.out.println();
-	}
-	
-	private Student search(int mNumber) {
-		while(nameList.hasNext()) {
-			Student current = nameList.next();
-			if(current.getMatriculationNumber()==mNumber) {
-				return current;
-			}
-		}
-		nameList.reset();
-		return null;
-	}
-	
-	private List<Student> search(String Name) {
-		List<Student> students = new ArrayList<Student>();
-		while(nameList.hasNext()) {
-			Student current = nameList.next();
-			if(current.getName().toLowerCase().equals(Name.toLowerCase())) {
-				students.add(current);
-			}
-		}
-		nameList.reset();
-		return students;
 	}
 	
 	
@@ -232,7 +178,19 @@ public class Main {
 		ndata[ndata.length-1] = student;
 		data = ndata;
 	}
-		
+	
+	private void removeFromArray(Student student) {
+		for(int i=0;i<data.length;i++) {
+			if(data[i].equals(student)) {
+				data[i] = data[data.length-1];
+			}
+		}
+		Student[] ndata = new Student[data.length-1];
+		for(int i=0;i<data.length;i++) {
+			ndata[i] = data[i];
+		}
+		data = ndata;
+	}
 	
 	private boolean checkMnumber(int mn) {
 		for(int i=0;i<data.length;i++) {
