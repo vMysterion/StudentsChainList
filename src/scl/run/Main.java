@@ -94,23 +94,28 @@ public class Main {
 		data=new Student[0];
 	}
 	
-	private void printTree(TreeElement next) {
+	private boolean printTree(TreeElement next) {
 		TreeElement left = next.getLeft();
 		TreeElement right = next.getRight();
+		boolean returned = false;
+		boolean printed = false;
 		
-		if(!next.hasLeft()) {
-			printStudent(next.getContent());
-			return;
+		if(next.hasLeft()) {
+			 returned = printTree(left);
 		} else {
-			printTree(left);
-		}
-		if (!next.hasRight()) {
 			printStudent(next.getContent());
-			return;
+			printed = true;
 		}
-		else {
+		
+		if(returned & !printed) {
+			printStudent(next.getContent());
+		} 
+		
+		if(next.hasRight()) {
 			printTree(right);
 		}
+		
+		return true;
 	}
 	
 	private void sortName() {
@@ -118,7 +123,7 @@ public class Main {
 	}
 	
 	private void sortMN() {
-		printTree(numberList.getRoot());
+	//	printTree(numberList.getRoot());
 	}
 	
 	
