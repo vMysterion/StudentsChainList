@@ -105,16 +105,19 @@ public class Main {
 			}
 		}
 		ArrayList<TreeElement> studenten = new ArrayList<TreeElement>();
-		TreeElement s=binaryNameSearch(numberList.getRoot(), name);
+		TreeElement s=binaryNameSearch(nameList.getRoot(), name);
+		loop = true;
 		studenten.add(s);
-		while(s!=null) {
+		while(s!=null && loop) {
 				if(s.hasLeft()) {
 					s=binaryNameSearch(s.getLeft(), name);
 				}else if(s.hasRight()) {
 					s=binaryNameSearch(s.getRight(), name);
 				}else loop=false;
-			
-				studenten.add(s);
+				
+				if(loop) {
+					studenten.add(s);
+				}
 		}
 		
 		if(studenten.size()==0) {
@@ -169,13 +172,14 @@ public class Main {
 	private TreeElement binaryNameSearch(TreeElement next,String name) {
 		if(next==null) {
 			return null;
-		}else if(next.getContent().getName().compareTo(name)==0) {
+		}else if(next.getContent().getName().equals(name)) {
 			return next;
-		}else if(next.getContent().getName().compareTo(name)==-1) {
+		}else if(name.compareTo(next.getContent().getName())<0) {
 			return binaryNameSearch(next.getLeft(),name);
-		}else {
+		}else if(name.compareTo(next.getContent().getName())>0) {
 			return binaryNameSearch(next.getRight(),name);
 		}
+		return null;
 	}
 	
 	
