@@ -85,9 +85,16 @@ public class Main {
 		case "N": insert(); break;
 		case "S": save(); break;
 		case "E": exit(); break;
+		case "Z": printArray();break;
 		}
 	}
 	
+	private void printArray() {
+		for(Student s :data) {
+			printStudent(s);
+		}
+	}
+
 	private void empty() {
 		numberList.empty();
 		nameList.empty();
@@ -123,7 +130,7 @@ public class Main {
 	}
 	
 	private void sortMN() {
-	//	printTree(numberList.getRoot());
+		printTree(numberList.getRoot());
 	}
 	
 	
