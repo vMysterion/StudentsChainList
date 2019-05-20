@@ -104,10 +104,9 @@ public class Main {
 				System.out.println("Error reading input - "+ioe.getMessage());
 			}
 		}
-		ArrayList<TreeElement> studenten = new ArrayList<TreeElement>();;
+		ArrayList<TreeElement> studenten = new ArrayList<TreeElement>();
 		TreeElement s=binaryNameSearch(numberList.getRoot(), name);
 		studenten.add(s);
-		loop = true;
 		while(s!=null) {
 				if(s.hasLeft()) {
 					s=binaryNameSearch(s.getLeft(), name);
