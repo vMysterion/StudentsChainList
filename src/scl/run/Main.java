@@ -103,12 +103,19 @@ public class Main {
 				System.out.println("Error reading input - "+ioe.getMessage());
 			}
 		}
+		ArrayList<TreeElement> studenten = new ArrayList<TreeElement>();;
+		TreeElement s=binaryNameSearch(numberList.getRoot(), name);
+		studenten.add(s);
+		while(s!=null) {
+			s=binaryNameSearch(s, name);
+			studenten.add(s);
+		}
 		
-		Student s=binaryNameSearch(numberList.getRoot(), name);
-		if(s == null) {
+		
+		if(studenten.size()==0) {
 			System.out.println("No student with name: "+name+" found");
-		}else {
-			printStudent(s);
+		} {
+			printStudent(s.getContent());
 		}
 	}
 	
@@ -129,20 +136,20 @@ public class Main {
 			}
 		}
 		
-		Student s=binaryNumberSearch(numberList.getRoot(), mNr);
+		TreeElement s=binaryNumberSearch(numberList.getRoot(), mNr);
 		if(s == null) {
 			System.out.println("No student with mNR: "+mNr+" found");
 		}else {
-			printStudent(s);
+			printStudent(s.getContent());
 		}
 	}
 
 	
-	private Student binaryNumberSearch(TreeElement next,int mNr) {
+	private TreeElement binaryNumberSearch(TreeElement next,int mNr) {
 		if(next==null) {
 			return null;
 		}else if(mNr==next.getContent().getMatriculationNumber()) {
-			return next.getContent();
+			return next;
 		}else if(mNr<=next.getContent().getMatriculationNumber()) {
 			return binaryNumberSearch(next.getLeft(),mNr);
 		}else {
@@ -150,11 +157,11 @@ public class Main {
 		}
 	}
 	
-	private Student binaryNameSearch(TreeElement next,String name) {
+	private TreeElement binaryNameSearch(TreeElement next,String name) {
 		if(next==null) {
 			return null;
 		}else if(next.getContent().getName().compareTo(name)==0) {
-			return next.getContent();
+			return next;
 		}else if(next.getContent().getName().compareTo(name)==-1) {
 			return binaryNameSearch(next.getLeft(),name);
 		}else {
