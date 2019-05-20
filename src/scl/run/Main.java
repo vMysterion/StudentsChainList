@@ -5,8 +5,6 @@ import scl.writer.*;
 import scl.reader.*;
 import java.io.*;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
 
 public class Main {
 	
@@ -18,10 +16,6 @@ public class Main {
 			+ "SN - Search by name\n"
             + "SM - Search by matriculation number \n"
             + "N  - Insert student\n"
-            + "LN - Remove student by name\n"
-            + "LM - Remove student by matriculation number\n"
-            + "MN - Change name\n"
-            + "MM - Change matriculation number\n"
             + "S  - Save data\n"
             + "E  - End programm\n";
 	
@@ -278,19 +272,6 @@ public class Main {
 			ndata[i] = data[i];
 		}
 		ndata[ndata.length-1] = student;
-		data = ndata;
-	}
-	
-	private void removeFromArray(Student student) {
-		for(int i=0;i<data.length;i++) {
-			if(data[i].equals(student)) {
-				data[i] = data[data.length-1];
-			}
-		}
-		Student[] ndata = new Student[data.length-1];
-		for(int i=0;i<data.length;i++) {
-			ndata[i] = data[i];
-		}
 		data = ndata;
 	}
 	
