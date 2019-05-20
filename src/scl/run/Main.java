@@ -107,7 +107,9 @@ public class Main {
 		ArrayList<TreeElement> studenten = new ArrayList<TreeElement>();
 		TreeElement s=binaryNameSearch(nameList.getRoot(), name);
 		loop = true;
-		studenten.add(s);
+		if(s!=null) {
+			studenten.add(s);
+		}
 		while(s!=null && loop) {
 				if(s.hasLeft()) {
 					s=binaryNameSearch(s.getLeft(), name);
@@ -122,12 +124,6 @@ public class Main {
 		
 		if(studenten.size()==0) {
 			System.out.println("No student with name: "+name+" found");
-		}else {
-			for(TreeElement e: studenten) {
-				if(e!=null) {
-					printStudent(e.getContent());
-				}
-			}
 		}
 	}
 	
