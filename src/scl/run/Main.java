@@ -82,12 +82,52 @@ public class Main {
 		case "L": empty(); break;
 		case "ZN": sortName(); break;
 		case "ZM": sortMN(); break;
+		case "SM": search();break;
 		case "N": insert(); break;
 		case "S": save(); break;
 		case "E": exit(); break;
 		case "Z": printArray();break;
 		}
 	}
+	
+	private void search() {
+		int mNr=0;
+		boolean loop = true;
+		while(loop) {
+			System.out.print("Matriculation Number: ");
+			try {
+				mNr = Integer.parseInt(br.readLine());
+				loop = false;
+			} catch(IOException ioe) {
+				System.out.println("Error reading input - "+ioe.getMessage());
+			} catch(NumberFormatException nfe) {
+				System.out.println("Number must be an integer!");
+			}
+		}
+		
+		Student s=searchMnr(numberList.getRoot(), mNr);
+		if(s == null) {
+			System.out.println("No student with mNR:"+mNr+" found");
+		}else {
+			printStudent(s);
+		}
+	}
+	
+	
+	private Student searchMnr(TreeElement next,int mNr) {
+		if(next==null) {
+			return null;
+		}else if(mNr==next.getContent().getMatriculationNumber()) {
+			return next.getContent();
+		}else if(mNr<=next.getContent().getMatriculationNumber()) {
+			return searchMnr(next.getLeft(),mNr);
+		}else {
+			return searchMnr(next.getRight(),mNr);
+		}
+	}
+	
+	
+	
 	
 	private void printArray() {
 		for(Student s :data) {
