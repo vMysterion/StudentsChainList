@@ -6,6 +6,7 @@ import scl.reader.*;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class Main {
 	
@@ -90,7 +91,7 @@ public class Main {
 	}
 	
 	
-	
+	//WARUM BALLERT DER NULL IN DIE ARRAYLIST?????
 	private void searchName() {
 		String name=null;
 		boolean loop = true;
@@ -106,16 +107,25 @@ public class Main {
 		ArrayList<TreeElement> studenten = new ArrayList<TreeElement>();;
 		TreeElement s=binaryNameSearch(numberList.getRoot(), name);
 		studenten.add(s);
+		loop = true;
 		while(s!=null) {
-			s=binaryNameSearch(s, name);
-			studenten.add(s);
+				if(s.hasLeft()) {
+					s=binaryNameSearch(s.getLeft(), name);
+				}else if(s.hasRight()) {
+					s=binaryNameSearch(s.getRight(), name);
+				}else loop=false;
+			
+				studenten.add(s);
 		}
-		
 		
 		if(studenten.size()==0) {
 			System.out.println("No student with name: "+name+" found");
-		} {
-			printStudent(s.getContent());
+		}else {
+			for(TreeElement e: studenten) {
+				if(e!=null) {
+					printStudent(e.getContent());
+				}
+			}
 		}
 	}
 	
