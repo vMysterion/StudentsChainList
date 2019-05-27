@@ -24,6 +24,129 @@ public class BinaryTree {
 		return this.root;
 	}
 	
+	public TreeElement get(String name, TreeElement element) {
+		Student student = element.getContent();
+		String studName = student.getName();
+		if(name.equals(studName)) {
+			return element;
+		} else if(name.compareTo(studName) > 0) {
+			return get(name, element.getRight());
+		} else if(name.compareTo(studName) < 0) {
+			return get(name, element.getLeft());
+		} else {
+			return null;
+		}
+	}
+	
+	private TreeElement get(int mn, TreeElement element) {
+		Student student = element.getContent();
+		int studMn = student.getMatriculationNumber();
+		if(mn == studMn) {
+			return element;
+		} else if(mn > studMn) {
+			return get(mn, element.getRight());
+		} else if(mn < studMn) {
+			return get(mn, element.getLeft());
+		} else {
+			return null;
+		}
+	}
+	
+	private Student swapElements(TreeElement before, TreeElement element, TreeElement swapElement, int dir) {
+		swapElement.setLeft(element.getLeft());
+		swapElement.setRight(element.getRight());
+		if(dir==1) {
+			before.setRight(swapElement);
+			return element.getContent();
+		} else if(dir==1) {
+			before.setLeft(swapElement);
+			return element.getContent();
+		} else {
+			return null;
+		}
+	}
+	
+	public Student remove(String name) {
+		Student returnStudent = null;
+		TreeElement element = this.getRoot();
+		
+		if(!element.hasLeft() && !element.hasRight()) {
+			this.root = null;
+			return element.getContent();
+		} else {
+			boolean loop = true;
+			TreeElement before = element;
+			int dir = 0;;
+			while(loop) {
+				if(element == null) {
+					return null;
+				}
+				if(name.compareTo(element.getContent().getName()) > 0) {
+					dir = 1;
+					element = element.getRight();
+				} else if(name.compareTo(element.getContent().getName()) < 0) {
+					dir = -1;
+					element = element.getLeft();
+				}
+				
+				if(name.equals(element.getContent().getName())) {
+					loop = false;
+				}
+				
+				if(loop) {
+					before = element;
+				}
+			}
+			if(element.hasRight()) {
+				TreeElement swapElement = element.getRight();
+				TreeElement beforeSwap = swapElement;
+				while(swapElement.hasLeft()) {
+					swapElement = swapElement.getLeft();
+					if(swapElement.hasLeft()) {
+						beforeSwap = swapElement;
+					}
+				}
+				if(!swapElement.hasLeft() && !swapElement.hasRight()) {
+					return this.swapElements(before, element, swapElement, dir);
+				} else if(swapElement.hasRight()) {
+					beforeSwap.setLeft(swapElement.getRight());
+					swapElement.getRight().setLeft(swapElement.getLeft());
+					return this.swapElements(before, element, swapElement, dir);
+				}
+			} else if(element.hasLeft()) {
+				TreeElement swapElement = element.getLeft();
+				TreeElement beforeSwap = null;
+				while(swapElement.hasRight()) {
+					element.getRight();
+					if(swapElement.hasLeft()) {
+						beforeSwap = swapElement;
+					}
+				}
+				if(!swapElement.hasLeft() && !swapElement.hasRight()) {
+					return this.swapElements(beforeSwap, element, swapElement, dir);
+				} else if(swapElement.hasRight()) {
+					beforeSwap.setRight(swapElement.getLeft());
+					swapElement.getLeft().setRight(swapElement.getRight());
+					return this.swapElements(beforeSwap, element, swapElement, dir);
+				} else {
+					return null;
+				}
+			} else {
+				if(dir == 1) {
+					before.setRight(null);
+					return element.getContent();
+				} else if(dir == -1) {
+					before.setLeft(null);
+					return element.getContent();
+				} else {
+					return null;
+				}
+			}
+			return null;
+		}
+		
+	}
+	
 	public void add(Student student) {
 		
 		TreeElement element = new TreeElement(student, null, null);

@@ -77,6 +77,7 @@ public class Main {
 		case "ZM": sortMN(); break;
 		case "SN": searchName();break;
 		case "SM": searchNumber();break;
+		case "RN": removeName(); break;
 		case "N": insert(); break;
 		case "S": save(); break;
 		case "E": exit(); break;
@@ -84,6 +85,15 @@ public class Main {
 		}
 	}
 	
+	private void removeName() {
+		String name = null;
+		boolean loop = true;
+
+		System.out.print("Name: ");
+		name = InputReader.readString();
+		Student removed = nameList.remove(name);
+		System.out.println("Removed "+removed.getName()+" - "+removed.getMatriculationNumber()+"!");
+	}
 	
 	//WARUM BALLERT DER NULL IN DIE ARRAYLIST?????
 	private void searchName() {
