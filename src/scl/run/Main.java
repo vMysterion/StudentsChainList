@@ -14,6 +14,8 @@ public class Main {
 			+ "L  - Empty the list\n"
 			+ "ZN - Sort by name and print list\n"
 			+ "ZM - Sort by matriculation number and print list\n"
+			+ "RN - Remove by name\n"
+			+ "RM - Remove by matriculation number\n"
 			+ "SN - Search by name\n"
             + "SM - Search by matriculation number \n"
             + "N  - Insert student\n"
@@ -76,9 +78,10 @@ public class Main {
 		case "L": empty(); break;
 		case "ZN": sortName(); break;
 		case "ZM": sortMN(); break;
+		case "RN": removeName(); break;
+		case "RM": removeMN(); break;
 		case "SN": searchName();break;
 		case "SM": searchNumber();break;
-		case "RN": removeName(); break;
 		case "N": insert(); break;
 		case "S": save(); break;
 		case "E": exit(); break;
@@ -90,9 +93,45 @@ public class Main {
 		String name = null;
 		boolean loop = true;
 
-		System.out.print("Name: ");
-		name = InputReader.readString();
-		Student removed = nameList.remove(name);
+		List<TreeElement> studentElements = searchName(); 
+		
+		System.out.println("Choose number of student:");
+		for(int i=0;i<studentElements.size();i++) {
+			Student s = studentElements.get(i).getContent();
+			System.out.println((i+1)+": "+s.getName()+" - "+s.getMatriculationNumber());
+		}
+		int number = -1;
+		while(loop) {
+			System.out.print(">>> ");
+			number = InputReader.readInt();
+			if(number <= 0 || number > studentElements.size()) {
+				System.out.println("Input must be a valid number!");
+			} else {
+				loop = false;
+			}
+		}
+		int mn = studentElements.get(number-1).getContent().getMatriculationNumber();
+		Student removed = nameList.remove(mn);
+		this.removeFromArray(removed);
+		System.out.println("Removed "+removed.getName()+" - "+removed.getMatriculationNumber()+"!");
+	}
+	
+	private void removeMN() {
+		int number = -1;
+		boolean loop = true;
+		
+		System.out.println("Number: ");
+		while(loop) {
+			System.out.print(">>> ");
+			number = InputReader.readInt();
+			if(number < 0) {
+				System.out.println("Number must be a positive integer!");
+			} else {
+				loop = false;
+			}
+		}
+		Student removed = numberList.remove(number);
+		this.removeFromArray(removed);
 		System.out.println("Removed "+removed.getName()+" - "+removed.getMatriculationNumber()+"!");
 	}
 	
@@ -122,7 +161,7 @@ public class Main {
 					s=binaryNameSearch(s.getRight(), name);
 				}else loop=false;
 				
-				if(loop) {
+				if(loop && s!=null) {
 					studenten.add(s);
 				}
 		}
@@ -234,7 +273,9 @@ public class Main {
 	}
 	
 	private void sortMN() {
+		System.out.println("\n--- Students ---");
 		printTree(numberList.getRoot());
+		System.out.println("----------------\n");
 	}
 	
 	
@@ -292,6 +333,19 @@ public class Main {
 			ndata[i] = data[i];
 		}
 		ndata[ndata.length-1] = student;
+		data = ndata;
+	}
+	
+	private void removeFromArray(Student student) {
+		for(int i=0;i<data.length;i++) {
+			if(data[i].equals(student)) {
+				data[i] = data[data.length-1];
+			}
+		}
+		Student[] ndata = new Student[data.length-1];
+		for(int i=0;i<ndata.length;i++) {
+			ndata[i] = data[i];
+		}
 		data = ndata;
 	}
 	

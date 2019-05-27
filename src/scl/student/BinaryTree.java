@@ -1,5 +1,8 @@
 package scl.student;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class BinaryTree {
 
 	private TreeElement root;
@@ -52,31 +55,38 @@ public class BinaryTree {
 		}
 	}
 	
-	private Student swapElements(TreeElement before, TreeElement element, TreeElement swapElement, int dir, boolean right) {
-		if(right) {
-			swapElement.setLeft(element.getLeft());
-		} else {
-			swapElement.setRight(element.getRight());
+	private Student swapElements(TreeElement before, TreeElement element, TreeElement swapElement, TreeElement beforeSwap, int dir, boolean right) {
+		
+		TreeElement eR = element.getRight();
+		TreeElement eL = element.getLeft();
+		
+		TreeElement sR = swapElement.getRight();
+		TreeElement sL = swapElement.getLeft();
+		
+		if(dir == 1) {
+			before.setRight(swapElement);
+		} else if(dir == -1) {
+			before.setLeft(swapElement);
 		}
 		
-		if(dir==1) {
-			before.setRight(swapElement);
-			return element.getContent();
-		} else if(dir==-1) {
-			before.setLeft(swapElement);
-			return element.getContent();
+		swapElement.setRight(eR);
+		swapElement.setLeft(eL);
+		
+		if(right) {
+			beforeSwap.setLeft(element);
 		} else {
-			return null;
+			beforeSwap.setRight(element);
 		}
+		
+		element.setLeft(sL);
+		element.setRight(sR);
+		
+		return element.getContent();
+
 	}
 	
-	public Student remove(String name) {
-		TreeElement element = this.getRoot();
+	private List getEssentialElements(TreeElement element, int mn) {
 		
-		if(!element.hasLeft() && !element.hasRight()) {
-			this.root = null;
-			return element.getContent();
-		} else {
 			boolean loop = true;
 			TreeElement before = element;
 			int dir = 0;
@@ -84,15 +94,15 @@ public class BinaryTree {
 				if(element == null) {
 					return null;
 				}
-				if(name.compareTo(element.getContent().getName()) > 0) {
+				if(mn > element.getContent().getMatriculationNumber()) {
 					dir = 1;
 					element = element.getRight();
-				} else if(name.compareTo(element.getContent().getName()) < 0) {
+				} else if(mn < element.getContent().getMatriculationNumber()) {
 					dir = -1;
 					element = element.getLeft();
 				}
 				
-				if(name.equals(element.getContent().getName())) {
+				if(mn == element.getContent().getMatriculationNumber()) {
 					loop = false;
 				}
 				
@@ -100,57 +110,131 @@ public class BinaryTree {
 					before = element;
 				}
 			}
-			if(element.hasRight()) {
-				TreeElement swapElement = element.getRight();
-				TreeElement beforeSwap = element;
-				while(swapElement.hasLeft()) {
-					if(swapElement.hasLeft()) {
-						beforeSwap = swapElement;
-					}
-					swapElement = swapElement.getLeft();
-				}
-				
-				//Is leaf - no more sons
-				if(!swapElement.hasLeft() && !swapElement.hasRight()) {
-					return this.swapElements(before, element, swapElement, dir, true);
-				//pull right sons on spot of the swapElement
-				} else if(swapElement.hasRight()) {
-					beforeSwap.setLeft(swapElement.getRight());
-					swapElement.getRight().setLeft(swapElement.getLeft());
-					return this.swapElements(before, element, swapElement, dir, true);
-				}
-			} else if(element.hasLeft()) {
-				TreeElement swapElement = element.getLeft();
-				TreeElement beforeSwap = element;
-				while(swapElement.hasRight()) {
-					if(swapElement.hasLeft()) {
-						beforeSwap = swapElement;
-					}
-					element.getRight();
-				}
-				//Is leaf - no more sons
-				if(!swapElement.hasLeft() && !swapElement.hasRight()) {
-					return this.swapElements(beforeSwap, element, swapElement, dir, false);
-				//pull left sons on spot of swapElement
-				} else if(swapElement.hasRight()) {
-					beforeSwap.setRight(swapElement.getLeft());
-					swapElement.getLeft().setRight(swapElement.getRight());
-					return this.swapElements(beforeSwap, element, swapElement, dir, false);
-				} else {
-					return null;
-				}
-			} else {
-				if(dir == 1) {
-					before.setRight(null);
-					return element.getContent();
-				} else if(dir == -1) {
-					before.setLeft(null);
-					return element.getContent();
-				} else {
-					return null;
-				}
+			List essentials = new ArrayList();
+			essentials.add(before);
+			essentials.add(element);
+			essentials.add(dir);
+			return essentials;
+	}
+	
+	private List getEssentialElements(TreeElement element, String name) {
+		
+		boolean loop = true;
+		TreeElement before = element;
+		int dir = 0;
+		while(loop) {
+			if(element == null) {
+				return null;
 			}
-			return null;
+			if(name.compareTo(element.getContent().getName()) > 0) {
+				dir = 1;
+				element = element.getRight();
+			} else if(name.compareTo(element.getContent().getName()) < 0) {
+				dir = -1;
+				element = element.getLeft();
+			}
+			
+			if(name.equals(element.getContent().getName())) {
+				loop = false;
+			}
+			
+			if(loop) {
+				before = element;
+			}
+		}
+		List essentials = new ArrayList();
+		essentials.add(before);
+		essentials.add(element);
+		essentials.add(dir);
+		return essentials;
+	}
+	
+	private Student remove(TreeElement before, TreeElement element, int dir) {
+		if(element.hasRight()) {
+			boolean onlyRight = true;
+			TreeElement swapElement = element.getRight();
+			TreeElement beforeSwap = element;
+			while(swapElement.hasLeft()) {
+				if(swapElement.hasLeft()) {
+					beforeSwap = swapElement;
+				}
+				swapElement = swapElement.getLeft();
+				onlyRight = false;
+			}
+			
+			if(onlyRight) {
+				if(element.hasLeft()) {
+					swapElement.setLeft(element.getLeft());
+				}
+				before.setRight(swapElement);
+				return element.getContent();
+			//Is leaf - no more sons
+			} else if(!swapElement.hasLeft() && !swapElement.hasRight()) {
+				Student removed = this.swapElements(before, element, swapElement, beforeSwap, dir, true);
+				beforeSwap.setLeft(null);
+				return removed;
+			//Swap Elements then pull right sons on previous spot of swapElement
+			} else if(swapElement.hasRight()) {
+				Student removed = this.swapElements(before, element, swapElement, beforeSwap, dir, true);
+				beforeSwap.setLeft(element.getRight());
+				return removed;
+			}
+		} else if(element.hasLeft()) {
+			boolean onlyLeft = true;
+			TreeElement swapElement = element.getLeft();
+			TreeElement beforeSwap = element;
+			while(swapElement.hasRight()) {
+				if(swapElement.hasLeft()) {
+					beforeSwap = swapElement;
+				}
+				element.getRight();
+				onlyLeft = false;
+			}
+			if(onlyLeft) {
+				if(element.hasRight()) {
+					swapElement.setLeft(element.getRight());
+				}
+				before.setLeft(swapElement);
+				return element.getContent();
+			//Is leaf - no more sons
+			} else if(!swapElement.hasLeft() && !swapElement.hasRight()) {
+				Student removed = this.swapElements(before, element, swapElement, beforeSwap, dir, false);
+				beforeSwap.setRight(null);
+				return removed;
+			//Swap Elements then pull right sons on previous spot of swapElement
+			} else if(swapElement.hasRight()) {
+				Student removed = this.swapElements(before, element, swapElement, beforeSwap, dir, false);
+				beforeSwap.setRight(element.getLeft());
+				return removed;
+			} else {
+				return null;
+			}
+		} else {
+			if(dir == 1) {
+				before.setRight(null);
+				return element.getContent();
+			} else if(dir == -1) {
+				before.setLeft(null);
+				return element.getContent();
+			} else {
+				return null;
+			}
+		}
+		return null;
+	}
+	
+	public Student remove(int mn) {
+		TreeElement element = this.getRoot();
+		if(!element.hasLeft() && !element.hasRight()) {
+			this.root = null;
+			return element.getContent();
+		} else {
+			List essentials = this.getEssentialElements(element, mn);
+			TreeElement before = (TreeElement)essentials.get(0);
+			element = (TreeElement)essentials.get(1);
+			int dir = (int)essentials.get(2);
+			
+			return this.remove(before, element, dir);
 		}
 		
 	}
