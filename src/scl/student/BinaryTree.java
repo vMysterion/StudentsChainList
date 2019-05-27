@@ -52,13 +52,17 @@ public class BinaryTree {
 		}
 	}
 	
-	private Student swapElements(TreeElement before, TreeElement element, TreeElement swapElement, int dir) {
-		swapElement.setLeft(element.getLeft());
-		swapElement.setRight(element.getRight());
+	private Student swapElements(TreeElement before, TreeElement element, TreeElement swapElement, int dir, boolean right) {
+		if(right) {
+			swapElement.setLeft(element.getLeft());
+		} else {
+			swapElement.setRight(element.getRight());
+		}
+		
 		if(dir==1) {
 			before.setRight(swapElement);
 			return element.getContent();
-		} else if(dir==1) {
+		} else if(dir==-1) {
 			before.setLeft(swapElement);
 			return element.getContent();
 		} else {
@@ -67,7 +71,6 @@ public class BinaryTree {
 	}
 	
 	public Student remove(String name) {
-		Student returnStudent = null;
 		TreeElement element = this.getRoot();
 		
 		if(!element.hasLeft() && !element.hasRight()) {
@@ -76,7 +79,7 @@ public class BinaryTree {
 		} else {
 			boolean loop = true;
 			TreeElement before = element;
-			int dir = 0;;
+			int dir = 0;
 			while(loop) {
 				if(element == null) {
 					return null;
@@ -99,35 +102,40 @@ public class BinaryTree {
 			}
 			if(element.hasRight()) {
 				TreeElement swapElement = element.getRight();
-				TreeElement beforeSwap = swapElement;
+				TreeElement beforeSwap = element;
 				while(swapElement.hasLeft()) {
-					swapElement = swapElement.getLeft();
 					if(swapElement.hasLeft()) {
 						beforeSwap = swapElement;
 					}
+					swapElement = swapElement.getLeft();
 				}
+				
+				//Is leaf - no more sons
 				if(!swapElement.hasLeft() && !swapElement.hasRight()) {
-					return this.swapElements(before, element, swapElement, dir);
+					return this.swapElements(before, element, swapElement, dir, true);
+				//pull right sons on spot of the swapElement
 				} else if(swapElement.hasRight()) {
 					beforeSwap.setLeft(swapElement.getRight());
 					swapElement.getRight().setLeft(swapElement.getLeft());
-					return this.swapElements(before, element, swapElement, dir);
+					return this.swapElements(before, element, swapElement, dir, true);
 				}
 			} else if(element.hasLeft()) {
 				TreeElement swapElement = element.getLeft();
-				TreeElement beforeSwap = null;
+				TreeElement beforeSwap = element;
 				while(swapElement.hasRight()) {
-					element.getRight();
 					if(swapElement.hasLeft()) {
 						beforeSwap = swapElement;
 					}
+					element.getRight();
 				}
+				//Is leaf - no more sons
 				if(!swapElement.hasLeft() && !swapElement.hasRight()) {
-					return this.swapElements(beforeSwap, element, swapElement, dir);
+					return this.swapElements(beforeSwap, element, swapElement, dir, false);
+				//pull left sons on spot of swapElement
 				} else if(swapElement.hasRight()) {
 					beforeSwap.setRight(swapElement.getLeft());
 					swapElement.getLeft().setRight(swapElement.getRight());
-					return this.swapElements(beforeSwap, element, swapElement, dir);
+					return this.swapElements(beforeSwap, element, swapElement, dir, false);
 				} else {
 					return null;
 				}

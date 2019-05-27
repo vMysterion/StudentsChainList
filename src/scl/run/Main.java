@@ -5,6 +5,7 @@ import scl.writer.*;
 import scl.reader.*;
 import java.io.*;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Main {
 	
@@ -96,7 +97,7 @@ public class Main {
 	}
 	
 	//WARUM BALLERT DER NULL IN DIE ARRAYLIST?????
-	private void searchName() {
+	private List<TreeElement> searchName() {
 		String name=null;
 		boolean loop = true;
 		while(loop) {
@@ -129,6 +130,13 @@ public class Main {
 		if(studenten.size()==0) {
 			System.out.println("No student with name: "+name+" found");
 		}
+		
+		System.out.println("\n--- Students ---");
+		for(TreeElement te : studenten) {
+			printStudent(te.getContent());
+		}
+		System.out.println("----------------\n");
+		return studenten;
 	}
 	
 
@@ -220,7 +228,9 @@ public class Main {
 	}
 	
 	private void sortName() {
+		System.out.println("\n--- Students ---");
 		printTree(nameList.getRoot());
+		System.out.println("----------------\n");
 	}
 	
 	private void sortMN() {
