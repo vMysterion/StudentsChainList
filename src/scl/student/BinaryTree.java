@@ -117,7 +117,7 @@ public class BinaryTree {
 			return essentials;
 	}
 	
-	private List getEssentialElements(TreeElement element, String name) {
+	private List getEssentialElements(TreeElement element, String name, int mn) {
 		
 		boolean loop = true;
 		TreeElement before = element;
@@ -134,7 +134,7 @@ public class BinaryTree {
 				element = element.getLeft();
 			}
 			
-			if(name.equals(element.getContent().getName())) {
+			if(name.equals(element.getContent().getName()) && mn == element.getContent().getMatriculationNumber()) {
 				loop = false;
 			}
 			
@@ -166,7 +166,11 @@ public class BinaryTree {
 				if(element.hasLeft()) {
 					swapElement.setLeft(element.getLeft());
 				}
-				before.setRight(swapElement);
+				if(dir==1) {
+					before.setRight(swapElement);
+				} else if(dir == -1) {
+					before.setLeft(swapElement);
+				}
 				return element.getContent();
 			//Is leaf - no more sons
 			} else if(!swapElement.hasLeft() && !swapElement.hasRight()) {
@@ -184,17 +188,22 @@ public class BinaryTree {
 			TreeElement swapElement = element.getLeft();
 			TreeElement beforeSwap = element;
 			while(swapElement.hasRight()) {
-				if(swapElement.hasLeft()) {
+				if(swapElement.hasRight()) {
 					beforeSwap = swapElement;
 				}
-				element.getRight();
+				swapElement = swapElement.getRight();
 				onlyLeft = false;
 			}
 			if(onlyLeft) {
 				if(element.hasRight()) {
 					swapElement.setLeft(element.getRight());
 				}
-				before.setLeft(swapElement);
+				if(dir==1) {
+					before.setRight(swapElement);
+				} else if(dir == -1) {
+					before.setLeft(swapElement);
+				}
+				
 				return element.getContent();
 			//Is leaf - no more sons
 			} else if(!swapElement.hasLeft() && !swapElement.hasRight()) {
@@ -230,6 +239,22 @@ public class BinaryTree {
 			return element.getContent();
 		} else {
 			List essentials = this.getEssentialElements(element, mn);
+			TreeElement before = (TreeElement)essentials.get(0);
+			element = (TreeElement)essentials.get(1);
+			int dir = (int)essentials.get(2);
+			
+			return this.remove(before, element, dir);
+		}
+		
+	}
+	
+	public Student remove(String name, int mn) {
+		TreeElement element = this.getRoot();
+		if(!element.hasLeft() && !element.hasRight()) {
+			this.root = null;
+			return element.getContent();
+		} else {
+			List essentials = this.getEssentialElements(element, name, mn);
 			TreeElement before = (TreeElement)essentials.get(0);
 			element = (TreeElement)essentials.get(1);
 			int dir = (int)essentials.get(2);

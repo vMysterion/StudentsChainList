@@ -110,29 +110,34 @@ public class Main {
 				loop = false;
 			}
 		}
-		int mn = studentElements.get(number-1).getContent().getMatriculationNumber();
-		Student removed = nameList.remove(mn);
-		this.removeFromArray(removed);
-		System.out.println("Removed "+removed.getName()+" - "+removed.getMatriculationNumber()+"!");
+		Student student =  studentElements.get(number-1).getContent();
+		int mn = student.getMatriculationNumber();
+		name = student.getName();
+		Student removedA = nameList.remove(name, mn);
+		Student removedB = numberList.remove(mn);
+		if(!removedA.equals(removedB)) {
+			System.out.println("Something went wrong!"); 
+			return;
+		}
+		this.removeFromArray(removedA);
+		System.out.println("Removed "+removedA.getName()+" - "+removedA.getMatriculationNumber()+"!");
 	}
 	
 	private void removeMN() {
-		int number = -1;
+		int mn = -1;
 		boolean loop = true;
 		
-		System.out.println("Number: ");
-		while(loop) {
-			System.out.print(">>> ");
-			number = InputReader.readInt();
-			if(number < 0) {
-				System.out.println("Number must be a positive integer!");
-			} else {
-				loop = false;
-			}
+		Student searched = this.searchNumber();
+		String name = searched.getName();
+		mn = searched.getMatriculationNumber();
+		Student removedA = nameList.remove(name, mn);
+		Student removedB = numberList.remove(mn);
+		if(!removedA.equals(removedB)) {
+			System.out.println("Something went wrong!"); 
+			return;
 		}
-		Student removed = numberList.remove(number);
-		this.removeFromArray(removed);
-		System.out.println("Removed "+removed.getName()+" - "+removed.getMatriculationNumber()+"!");
+		this.removeFromArray(removedA);
+		System.out.println("Removed "+removedA.getName()+" - "+removedA.getMatriculationNumber()+"!");
 	}
 	
 	//WARUM BALLERT DER NULL IN DIE ARRAYLIST?????
@@ -180,7 +185,7 @@ public class Main {
 	
 
 	
-	private void searchNumber() {
+	private Student searchNumber() {
 		int mNr=0;
 		boolean loop = true;
 		while(loop) {
@@ -198,8 +203,10 @@ public class Main {
 		TreeElement s=binaryNumberSearch(numberList.getRoot(), mNr);
 		if(s == null) {
 			System.out.println("No student with mNR: "+mNr+" found");
+			return null;
 		}else {
 			printStudent(s.getContent());
+			return s.getContent();
 		}
 	}
 
