@@ -5,6 +5,10 @@ public class Student implements Comparable<Student> {
 	private int mn;
 	private String name;
 	
+	public void setName(String name) {
+		this.name = name;
+	}
+
 	public Student(String name, int mn) {
 		this.mn = mn;
 		this.name = name;
@@ -12,6 +16,10 @@ public class Student implements Comparable<Student> {
 	
 	public int getMatriculationNumber() {
 		return this.mn;
+	}
+	
+	public void setMatriculationNumber(int mn) {
+		this.mn = mn;
 	}
 	
 	public String getName() {

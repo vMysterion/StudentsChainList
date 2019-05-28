@@ -16,6 +16,8 @@ public class Main {
 			+ "ZM - Sort by matriculation number and print list\n"
 			+ "RN - Remove by name\n"
 			+ "RM - Remove by matriculation number\n"
+			+ "CM - Change Matriculation\n"
+			+ "CN - Change Name\n"
 			+ "SN - Search by name\n"
             + "SM - Search by matriculation number \n"
             + "N  - Insert student\n"
@@ -80,8 +82,10 @@ public class Main {
 		case "ZM": sortMN(); break;
 		case "RN": removeName(); break;
 		case "RM": removeMN(); break;
-		case "SN": searchName();break;
-		case "SM": searchNumber();break;
+		case "CM": changeMN(); break;
+		case "CN": changeName(); break;
+		case "SN": searchName(true);break;
+		case "SM": searchNumber(true);break;
 		case "N": insert(); break;
 		case "S": save(); break;
 		case "E": exit(); break;
@@ -89,11 +93,115 @@ public class Main {
 		}
 	}
 	
-	private void removeName() {
+	private Student getStudent() {
+		System.out.print(""
+				+ "Choose number of selection (0 to exit): \n"
+				+ "1: Matriculation number\n"
+				+ "2: Name\n");
+		boolean loop = true;
+		int selection = -1;
+		while(loop) {
+			System.out.print(">>> ");
+			selection = InputReader.readInt();
+			if(selection < 0 || selection > 2) {
+				System.out.println("Must be in range!");
+			} else if(selection == 0) {
+				System.out.println();
+				return null;
+			} else {
+				loop = false;
+			}
+		}
+		
+		Student student = null;
+		if(selection==1) {
+			Student searched = this.searchNumber(false);
+			String name = searched.getName();
+			int mn = searched.getMatriculationNumber();
+			Student removedA = nameList.remove(name, mn);
+			Student removedB = numberList.remove(mn);
+			if(!removedA.equals(removedB)) {
+				System.out.println("Something went wrong!"); 
+				return null;
+			}
+			student = removedA;
+		} else if(selection == 2) {
+			List<TreeElement> studentElements = searchName(false); 
+			
+			System.out.println("Choose number of student:");
+			for(int i=0;i<studentElements.size();i++) {
+				Student s = studentElements.get(i).getContent();
+				System.out.println((i+1)+": "+s.getName()+" - "+s.getMatriculationNumber());
+			}
+			int number = -1;
+			while(loop) {
+				System.out.print(">>> ");
+				number = InputReader.readInt();
+				if(number <= 0 || number > studentElements.size()) {
+					System.out.println("Input must be a valid number!");
+				} else {
+					loop = false;
+				}
+			}
+			Student searched =  studentElements.get(number-1).getContent();
+			int mn = searched.getMatriculationNumber();
+			String name = searched.getName();
+			Student removedA = nameList.remove(name, mn);
+			Student removedB = numberList.remove(mn);
+			if(!removedA.equals(removedB)) {
+				System.out.println("Something went wrong!"); 
+				return null;
+			}
+			student = removedA;
+		}
+		
+		return student;
+	}
+	
+	private void changeName() {
+		Student student = this.getStudent();
+		if(student == null) {
+			System.out.println("Something went wrong...");
+		} else {
+			System.out.print("New Name for "+student.getName()+": ");
+			String name = InputReader.readString();
+			nameList.remove(student.getName(), student.getMatriculationNumber());
+			numberList.remove(student.getMatriculationNumber());
+			student.setName(name);
+			nameList.add(student);
+			numberList.add(student);
+		}
+	}
+	
+	private void changeMN() {
+		Student student = this.getStudent();
+		if(student == null) {
+			System.out.println("Something went wrong...");
+		} else {
+			boolean loop = true;
+			int number = -1;
+			while(loop) {
+				System.out.print("New Number for "+student.getName()+": ");
+				number = InputReader.readInt();
+				if(number <= 0) {
+					System.out.println("New Matriculation Number must be bigger than 0!");
+				} else {
+					loop = false;
+				}
+			}
+			nameList.remove(student.getName(), student.getMatriculationNumber());
+			numberList.remove(student.getMatriculationNumber());
+			student.setMatriculationNumber(number);
+			nameList.add(student);
+			numberList.add(student);
+		}
+	}
+	
+	private Student removeName() {
 		String name = null;
 		boolean loop = true;
 
-		List<TreeElement> studentElements = searchName(); 
+		List<TreeElement> studentElements = searchName(false); 
 		
 		System.out.println("Choose number of student:");
 		for(int i=0;i<studentElements.size();i++) {
@@ -117,31 +225,33 @@ public class Main {
 		Student removedB = numberList.remove(mn);
 		if(!removedA.equals(removedB)) {
 			System.out.println("Something went wrong!"); 
-			return;
+			return null;
 		}
 		this.removeFromArray(removedA);
 		System.out.println("Removed "+removedA.getName()+" - "+removedA.getMatriculationNumber()+"!");
+		return removedA;
 	}
 	
-	private void removeMN() {
+	private Student removeMN() {
 		int mn = -1;
 		boolean loop = true;
 		
-		Student searched = this.searchNumber();
+		Student searched = this.searchNumber(false);
 		String name = searched.getName();
 		mn = searched.getMatriculationNumber();
 		Student removedA = nameList.remove(name, mn);
 		Student removedB = numberList.remove(mn);
 		if(!removedA.equals(removedB)) {
 			System.out.println("Something went wrong!"); 
-			return;
+			return null;
 		}
 		this.removeFromArray(removedA);
 		System.out.println("Removed "+removedA.getName()+" - "+removedA.getMatriculationNumber()+"!");
+		return removedA;
 	}
 	
 	//WARUM BALLERT DER NULL IN DIE ARRAYLIST?????
-	private List<TreeElement> searchName() {
+	private List<TreeElement> searchName(boolean print) {
 		String name=null;
 		boolean loop = true;
 		while(loop) {
@@ -175,17 +285,19 @@ public class Main {
 			System.out.println("No student with name: "+name+" found");
 		}
 		
-		System.out.println("\n--- Students ---");
-		for(TreeElement te : studenten) {
-			printStudent(te.getContent());
+		if(print) {
+			System.out.println("\n--- Students ---");
+			for(TreeElement te : studenten) {
+				printStudent(te.getContent());
+			}
+			System.out.println("----------------\n");
 		}
-		System.out.println("----------------\n");
 		return studenten;
 	}
 	
 
 	
-	private Student searchNumber() {
+	private Student searchNumber(boolean print) {
 		int mNr=0;
 		boolean loop = true;
 		while(loop) {
@@ -205,7 +317,9 @@ public class Main {
 			System.out.println("No student with mNR: "+mNr+" found");
 			return null;
 		}else {
-			printStudent(s.getContent());
+			if(print) {
+				printStudent(s.getContent());
+			}
 			return s.getContent();
 		}
 	}
